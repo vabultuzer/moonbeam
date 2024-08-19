@@ -1,0 +1,56 @@
+---
+version: "2.0"
+services:
+  moonbeam:
+    image: moonbeamfoundation/moonbeam:v0.39.0
+    expose:
+      - port: 30333
+        as: 30333
+        to:
+          - global: true
+      - port: 30334
+        as: 30334
+        to:
+          - global: true
+      - port: 9615
+        as: 9615
+        to:
+          - global: true
+      - port: 9616
+        as: 9616
+        to:
+          - global: true
+      - port: 9944
+        as: 9944
+        to:
+          - global: true
+      - port: 9945
+        as: 9945
+        to:
+          - global: true
+    command:
+      - bash
+      - "-c"
+    args:
+      - /moonbeam/moonbeam --chain moonbeam --name "akash" --rpc-external --rpc-cors=all
+profiles:
+  compute:
+    moonbeam:
+      resources:
+        cpu:
+          units: 8
+        memory:
+          size: 16GB
+        storage:
+          - size: 1TB
+  placement:
+    dcloud:
+      pricing:
+        moonbeam:
+          denom: uakt
+          amount: 1000
+deployment:
+  moonbeam:
+    dcloud:
+      profile: moonbeam
+      count: 1
